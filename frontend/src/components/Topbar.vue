@@ -9,9 +9,8 @@
   
   <script setup>
     import { onMounted } from 'vue';
-    import { useAuthStore } from '@/stores/auth';
-  
-    const auth = useAuthStore();
+    import { useUserStore } from '@/stores/user';    
+    const auth = useUserStore();
   
     onMounted(() => {
         if (!auth.user && auth.token) {
@@ -19,6 +18,7 @@
         }
     });
     function logout() {
+      auth.logout();
         alert('Logged out!')
     }
   </script>

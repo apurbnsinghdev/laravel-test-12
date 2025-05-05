@@ -16,9 +16,9 @@
   
   <script setup>
   import { onMounted } from 'vue';
-  import { useAuthStore } from '@/stores/auth';
+  import { useUserStore } from '@/stores/user';
   
-  const auth = useAuthStore();
+  const auth = useUserStore();
   
   onMounted(() => {
     if (!auth.user && auth.token) {

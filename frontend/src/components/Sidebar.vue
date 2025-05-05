@@ -17,8 +17,8 @@
   </template>
   
   <script setup>
-    import { useAuthStore } from '@/stores/auth';    
-    const auth = useAuthStore();
+    import { useUserStore } from '@/stores/user';    
+    const auth = useUserStore();
     const user = auth.user;
 
     function logout() {

@@ -21,9 +21,8 @@ class Employee extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function detail()
+    public function employeeDetail()
     {
         return $this->hasOne(EmployeeDetail::class);
     }
-    
 }

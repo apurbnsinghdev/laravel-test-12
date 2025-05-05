@@ -15,7 +15,16 @@ api.interceptors.request.use(
     }
     return config;
   },
-  error => Promise.reject(error)
+  async error => {
+    // If CSRF token expired (Laravel returns 419)
+    if (error.response && error.response.status === 419) {
+      await api.get('sanctum/csrf-cookie');
+      return api.request(error.config); // retry original request
+    }
+    return Promise.reject(error);
+  }
 );
+
+
 
 export default api;

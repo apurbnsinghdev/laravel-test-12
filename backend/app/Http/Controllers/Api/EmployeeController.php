@@ -7,6 +7,8 @@ use App\Models\EmployeeDetail;
 use App\Http\Requests\StoreEmployeeRequest;
 use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -15,18 +17,38 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with('department')->paginate(20);
+        
+        $query = Employee::with([
+            'department', 
+            'employeeDetail'
+        ]);
 
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%")
+                  ->orWhereHas('employeeDetail', function($q2) use ($search) {
+                      $q2->where('designation', 'like', "%$search%")
+                         ->orWhere('salary', 'like', "%$search%")
+                         ->orWhere('address', 'like', "%$search%");
+                  });
+            });
+        }else{
+            $query->orderByDesc('created_at');
+        }
+
+        $employees = $query->paginate(20);
         return response()->json($employees);
     }
 
     /**
      * Create Employee
      *
-     * @bodyParam name string required Example: John Doe
-     * @bodyParam email string required Example: john@example.com
+     * @bodyParam name string required Example: Apurba Sing
+     * @bodyParam email string required Example: apurba@gmail.com
      * @bodyParam department_id int required Example: 1
      *
      * @response 201 {"message": "Employee created"}

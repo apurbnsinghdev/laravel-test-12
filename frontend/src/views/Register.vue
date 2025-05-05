@@ -43,7 +43,7 @@ async function register() {
   if (!result.success) {
     Object.assign(errors, result.errors)
   } else {
-      router.push('/dashboard');
+      router.push('/');
   }
 }
 </script>
