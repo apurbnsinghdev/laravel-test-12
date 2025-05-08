@@ -25,10 +25,13 @@ class StoreEmployeeRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email',
             'department_id' => 'required|exists:departments,id',
-            'designation' => 'required|string|max:255',
-            'salary' => 'required|numeric|min:0',
-            'address' => 'required|string',
-            'joined_date' => 'required|date',
+            
+            // Nested validation
+            'employee_detail.designation' => 'required|string|max:255',
+            'employee_detail.salary' => 'required|numeric',
+            'employee_detail.address' => 'required|string',
+            'employee_detail.joined_date' => 'required|date',
         ];
     }
+    
 }

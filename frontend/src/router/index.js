@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Employee from '@/views/Employee.vue';
-import { useAuthStore } from '../stores/auth'
-
 
 const routes = [
   {
@@ -21,11 +20,13 @@ const routes = [
     path: '/employee',
     name: 'Employee',
     component: Employee,
+    meta: { requiresAuth: true },
   },
   {
     path: '/',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -35,12 +36,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
+  const auth = useUserStore()
   // List of public pages
-  const publicPages = ['/login', '/register', '/employee']
-  const authRequired = !publicPages.includes(to.path)
-
-  if (authRequired && !auth.token) {
+  //const publicPages = ['/login', '/register', '/employee']
+  //const authRequired = !publicPages.includes(to.path)
+  if (to.meta.requiresAuth && !auth.user) {
     next('/login')
   } else {
     next()

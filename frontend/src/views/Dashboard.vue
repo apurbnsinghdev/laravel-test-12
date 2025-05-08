@@ -5,7 +5,6 @@
       <div v-if="auth.user">
         <p><strong>Name:</strong> {{ auth.user.name }}</p>
         <p><strong>Email:</strong> {{ auth.user.email }}</p>
-        <button @click="logout">Logout</button>
       </div>
   
       <div v-else>

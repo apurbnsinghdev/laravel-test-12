@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-#use App\Models\User;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Department;
@@ -16,17 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         // Insert 10 Departments
         $departments = Department::factory(10)->create();
 
         //Insert 100,000 Employees with EmployeeDetails
         foreach (range(1, 10) as $i) {
-            Employee::factory(100000)
+            Employee::factory(100)
             ->create()
             ->each(function ($employee) {
-                $employee->detail()->create(
+                $employee->employeeDetail()->create(
                     \App\Models\EmployeeDetail::factory()->make()->toArray()
                 );
             });
